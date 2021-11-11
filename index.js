@@ -21,6 +21,7 @@ async function run() {
         const database = client.db('niche_cycle');
         const productsCollection = database.collection('products');
         const ordersCollection = database.collection('orders');
+        const usersCollection = database.collection('users');
 
         // GET api for products
         app.get('/products', async (req, res) => {
@@ -36,6 +37,21 @@ async function run() {
         // post api
         app.post('/userOrder', async (req, res) => {
             const result = await ordersCollection.insertOne(req.body);
+            res.send(result);
+        })
+
+        app.post('/users', async (req, res) => {
+            const result = await usersCollection.insertOne(req.body);
+            res.send(result);
+        })
+
+        // put api
+        app.put('/users', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const options = { upsert: true };
+            const updateDoc = { $set: user };
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
             res.send(result);
         })
     }
