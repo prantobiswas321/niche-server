@@ -3,6 +3,7 @@ const app = express()
 const cors = require('cors')
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
 
 const port = process.env.PORT || 5000;
 
@@ -19,10 +20,22 @@ async function run() {
         await client.connect();
         const database = client.db('niche_cycle');
         const productsCollection = database.collection('products');
+        const ordersCollection = database.collection('orders');
 
         // GET api for products
         app.get('/products', async (req, res) => {
             const result = await productsCollection.find({}).toArray();
+            res.send(result);
+        })
+
+        app.get('/order/:id', async (req, res) => {
+            const result = await productsCollection.findOne({ _id: ObjectId(req.params.id) });
+            res.send(result);
+        })
+
+        // post api
+        app.post('/userOrder', async (req, res) => {
+            const result = await ordersCollection.insertOne(req.body);
             res.send(result);
         })
     }
