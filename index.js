@@ -54,6 +54,12 @@ async function run() {
             const result = await usersCollection.updateOne(filter, updateDoc, options);
             res.send(result);
         })
+
+        // get my orders
+        app.get('/myOrders/:email', async (req, res) => {
+            const result = await ordersCollection.find({ email: req.params.email }).toArray();
+            res.send(result);
+        })
     }
     finally {
         //   await client.close();
