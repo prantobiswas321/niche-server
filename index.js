@@ -29,6 +29,13 @@ async function run() {
             res.send(result);
         })
 
+        // post api for add product
+        app.post('/products', async (req, res) => {
+            const product = req.body;
+            const result = await productsCollection.insertOne(product);
+            res.json(result);
+        })
+
         app.get('/order/:id', async (req, res) => {
             const result = await productsCollection.findOne({ _id: ObjectId(req.params.id) });
             res.send(result);
