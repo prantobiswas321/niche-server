@@ -55,9 +55,28 @@ async function run() {
             res.send(result);
         })
 
+        // put api for admin
+        app.put('/users/admin', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const updateDoc = { $set: { role: 'admin' } };
+            const result = await usersCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        })
+
+        app.get('/users/:email', async (req, res) => {
+            const email = req.params.email;
+        })
+
         // get my orders
         app.get('/myOrders/:email', async (req, res) => {
             const result = await ordersCollection.find({ email: req.params.email }).toArray();
+            res.send(result);
+        })
+
+        // delete api from my order
+        app.delete('/deleteOrder/:id', async (req, res) => {
+            const result = await ordersCollection.deleteOne({ _id: ObjectId(req.params.id) });
             res.send(result);
         })
     }
