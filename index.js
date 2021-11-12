@@ -94,9 +94,23 @@ async function run() {
             res.send(result);
         })
 
-        // delete api from my order
+        // delete api for my order
         app.delete('/deleteOrder/:id', async (req, res) => {
             const result = await ordersCollection.deleteOne({ _id: ObjectId(req.params.id) });
+            res.send(result);
+        })
+
+        // delete api for manage products
+        app.delete('/deleteProduct/:id', async (req, res) => {
+            const result = await productsCollection.deleteOne({ _id: ObjectId(req.params.id) });
+            res.send(result);
+        })
+
+        // put api for update status
+        app.put('/updateOrderStatus', async (req, res) => {
+            const filter = { _id: ObjectId(req.body._id) };
+            const updateDoc = { $set: { status: 'shipped' } };
+            const result = await ordersCollection.updateOne(filter, updateDoc);
             res.send(result);
         })
     }
