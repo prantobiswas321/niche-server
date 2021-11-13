@@ -59,6 +59,12 @@ async function run() {
             res.send(result);
         })
 
+        // get api for user review
+        app.get('/userReviews', async (req, res) => {
+            const result = await reviewCollection.find({}).toArray();
+            res.send(result);
+        })
+
         // put api
         app.put('/users', async (req, res) => {
             const user = req.body;
